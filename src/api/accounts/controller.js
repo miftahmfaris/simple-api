@@ -112,9 +112,9 @@ module.exports = {
     const newUser = {
       fullName: req.body.fullName || "",
       email: req.body.email || "",
-      phoneNumber: req.body.phoneNumber || "",
-      password: req.body.password || ""
+      phoneNumber: req.body.phoneNumber || ""
     };
+
     const id = req.params.id;
     Account.findOneAndUpdate(
       {
@@ -128,7 +128,7 @@ module.exports = {
         upsert: false
       },
       (error, resource) => {
-        if (error) return res.send({ message: "error when updating post" });
+        if (error) return res.send(error);
         res.send({
           message: `Account with id: ${id} has been updated`,
           data: resource
