@@ -139,12 +139,14 @@ module.exports = {
 
   // PUT /accounts/password/:id
   putPasswordById: (req, res) => {
+    console.log(req.body);
     const payload = {
       password: req.body.password || "",
       currentPassword: req.body.currentPassword || ""
     };
+    console.log(req.body.currentPassword);
     const id = req.params.id;
-
+    var hash = bcrypt.hashSync(req.body.currentPassword, 8);
     Account.findOne({ id: id })
       .then(account => {
         console.log("findPayload", payload.password);
@@ -163,7 +165,7 @@ module.exports = {
               id: id
             },
             {
-              $set: { password: payload.currentPassword }
+              $set: { password: hash }
             },
             (error, resource) => {
               if (error)
@@ -174,12 +176,6 @@ module.exports = {
               });
             }
           );
-          // res.send({
-          //   message: `Your successfully logged in`,
-          //   fullName: account.fullName,
-          //   password: account.password,
-          //   id: account.id
-          // });
         }
       })
       .catch(err => {
